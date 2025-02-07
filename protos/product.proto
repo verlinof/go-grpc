@@ -7,7 +7,7 @@ import "pagination.proto";
 option go_package = "github.com/verlinof/go-grpc/pb/products";
 
 service ProductService {
-  rpc GetProducts(Empty) returns (Products);
+  rpc GetProducts(Page) returns (Products);
   rpc GetProduct(Id) returns (Product);
   rpc CreateProduct(Product) returns (Id);
   rpc UpdateProduct(Product) returns (Status);
@@ -19,7 +19,7 @@ message Empty{};
 
 message Products {
   Pagination pagination = 1;
-  repeated Product data = 2;
+  repeated Product data = 2; //Repeated digunakan untuk array
 }
 
 message Product {
@@ -43,8 +43,14 @@ message Status {
   uint32 status = 1;
 }
 
+message Page {
+  optional int64 page = 1; // Optional digunakan untuk dapat NULL
+}
+
 //Run Command
 // protoc --proto_path=protos protos/*.proto \
 //   --go_out=. --go_opt=module=github.com/verlinof/go-grpc \
 //   --go-grpc_out=. --go-grpc_opt=module=github.com/verlinof/go-grpc
 
+// Export go path ke WSL
+// export PATH=$PATH:$(go env GOPATH)/bin
